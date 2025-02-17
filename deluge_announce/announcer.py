@@ -6,6 +6,8 @@ from deluge_web_client import DelugeWebClient
 from .logger import init_logger
 from .config import Config
 
+# inspiration from https://github.com/kenstir/deluge-reannounce/blob/develop/deluge_reannounce
+
 
 class Announcer:
     def __init__(
