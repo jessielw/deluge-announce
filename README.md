@@ -12,6 +12,7 @@ A script that will announce torrents on a timed interval (CRON).
 #### Options for Use
 
 - Docker ([link](https://hub.docker.com/repository/docker/jlw4049/deluge-announce/))
+- Package ([link](https://pypi.org/project/deluge-announce/))
 
 #### Running the Docker Container
 
@@ -22,6 +23,33 @@ docker run -e "WEB_URL=<your_web_url>" -e "PASSWORD=<your_web_url_password>" -e 
 ```
 
 This command will mount the `app_data` volume to persist logs across container restarts.
+
+#### Running the Script as a Package
+
+1. Install the package
+
+```bash
+poetry add deluge-announce
+# or
+pip install deluge-announce
+```
+
+2. Use in your Python code
+
+```python
+from deluge_announce import Announcer
+announcer = Announcer(
+    web_url="https://yourweburl.com/",
+    password="YOUR PASSWORD",
+    cron_schedule="0 * * * *", # runs every hour
+)
+
+# Run the notifier once
+announcer.run()
+
+# Or run continuously as scheduled by cron
+announcer.run_forever()
+```
 
 #### Checking Logs
 
