@@ -5,7 +5,7 @@ from logging.handlers import RotatingFileHandler
 
 
 def init_logger(log_directory: Path) -> logging.Logger:
-    logger = logging.getLogger("pypi_notifier")
+    logger = logging.getLogger("deluge_announce")
     logger.setLevel(logging.INFO)
 
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
