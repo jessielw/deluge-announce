@@ -21,7 +21,7 @@ To run the Docker container with the appropriate environment variables, use the 
 docker run -e "WEB_URL=<your_web_url>" -e "PASSWORD=<your_web_url_password>" -e "CRON_SCHEDULE=0 * * * *" -v "app_data:/app_data"
 ```
 
-This command will mount the `app_data` volume to persist the database and logs across container restarts.
+This command will mount the `app_data` volume to persist logs across container restarts.
 
 #### Checking Logs
 
