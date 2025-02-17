@@ -19,8 +19,12 @@ A script that will announce torrents on a timed interval (CRON).
 To run the Docker container with the appropriate environment variables, use the following command:
 
 ```bash
-docker run -e "WEB_URL=<your_web_url>" -e "PASSWORD=<your_web_url_password>" -e "CRON_SCHEDULE=0 * * * *" -v "app_data:/app_data"
+docker run -e "WEB_URL=<your_web_url>" -e "PASSWORD=<your_web_url_password>" -e "CRON_SCHEDULE=0 * * * *" -e "SKIP_RE_ANNOUNCE=too many requests" -e "FORCE_RE_ANNOUNCE=warning|error" -e "LOG_LEVEL=Info" -v "app_data:/app_data"
 ```
+
+`SKIP_RE_ANNOUNCE` and `SKIP_RE_ANNOUNCE` expects **pipe operator |** separated strings. i.e. `SKIP_RE_ANNOUNCE=reason1|reason2`
+
+`LOG_LEVEL` defaults to **Info**. It can be any of **Debug**, **Info**, **Warning**, **Error**, or **Critical**. _(Case insensitive)_
 
 This command will mount the `app_data` volume to persist logs across container restarts.
 
@@ -42,6 +46,9 @@ announcer = Announcer(
     web_url="https://yourweburl.com/",
     password="YOUR PASSWORD",
     cron_schedule="0 * * * *", # runs every hour
+    skip_re_announce=["too many requests"], # defaults
+    force_re_announce=["warning", "error"]  # defaults
+    log_level="Info", # defaults to INFO from enum LogLevel. Strings are also accepted "Debug", "Info", "Warning", "Error", or "Critical". (Case insensitive)
 )
 
 # Run the notifier once
