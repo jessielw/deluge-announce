@@ -1,6 +1,6 @@
 # Deluge Announce
 
-A script that will announce torrents on a timed interval.
+A script that will announce torrents on a timed interval (CRON).
 
 ## Prerequisites
 
