@@ -3,10 +3,14 @@ import sys
 from pathlib import Path
 from logging.handlers import RotatingFileHandler
 
+from .enums import LogLevel
 
-def init_logger(log_directory: Path) -> logging.Logger:
+
+def init_logger(
+    log_directory: Path, log_level: LogLevel = LogLevel.INFO
+) -> logging.Logger:
     logger = logging.getLogger("deluge_announce")
-    logger.setLevel(logging.INFO)
+    logger.setLevel(log_level.value)
 
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 
