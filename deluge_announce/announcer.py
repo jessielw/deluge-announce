@@ -67,12 +67,14 @@ class Announcer:
                 status = torrent_data.get("tracker_status", "")
                 self._re_announce(torrent_hash, status)
 
+        self.logger.info("Done iterating torrents.")
+
     def _re_announce(self, t_hash: str, status: str) -> None:
-        status = status.lower()
-        if "too many requests" in status:
-            self.logger.info(f"Too many requests for torrent hash {t_hash}")
+        status_lowered = status.lower()
+        if "too many requests" in status_lowered:
+            self.logger.info(f"Too many requests for torrent hash {t_hash}.")
         elif any(
-            substr in status
+            substr in status_lowered
             for substr in [
                 "unregistered",
                 "sent",
@@ -81,12 +83,16 @@ class Announcer:
                 "error",
             ]
         ):
+            self.logger.info(
+                f"Force re-announcing torrent {t_hash} (status: {status})."
+            )
             payload = {
                 "method": "core.force_reannounce",
                 "params": [[t_hash]],
                 "id": self.client.ID + 1,
             }
             self.client.execute_call(payload=payload)
+            self.logger.info(f"Force re-announcing torrent completed {t_hash}.")
         else:
             # could do no seeds but for now we'll do nothing
             pass
