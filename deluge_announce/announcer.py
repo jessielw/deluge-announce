@@ -75,16 +75,7 @@ class Announcer:
         status_lowered = status.lower()
         if "too many requests" in status_lowered:
             self.logger.info(f"Too many requests for torrent hash {t_hash}.")
-        elif any(
-            substr in status_lowered
-            for substr in [
-                "unregistered",
-                "sent",
-                "end of file",
-                "bad gateway",
-                "error",
-            ]
-        ):
+        elif status_lowered in ("warning", "error"):
             self.logger.info(
                 f"Force re-announcing torrent {t_hash} (status: {status})."
             )
