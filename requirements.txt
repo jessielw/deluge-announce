@@ -1,0 +1,3 @@
+apscheduler==3.11.0
+deluge-web-client==1.0.4
+python-dotenv==1.0.1
