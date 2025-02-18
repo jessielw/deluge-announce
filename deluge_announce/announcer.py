@@ -122,7 +122,7 @@ class Announcer:
         for skip_str in self.config.skip_re_announce:
             if skip_str and skip_str in status_lowered:
                 self.logger.info(
-                    f"Skipping torrent, reason={skip_str}, hash={t_hash}, name={name}."
+                    f"Skipping torrent, reason={skip_str}, status={status}, hash={t_hash}, name={name}."
                 )
                 return False
 
