@@ -97,7 +97,7 @@ class Announcer:
             # force re-announce trackers
             if not torrents_to_re_announce:
                 self.logger.info("No torrents to re-announce.")
-            if torrents_to_re_announce:
+            elif torrents_to_re_announce:
                 self.logger.info(
                     f"Re-announcing {len(torrents_to_re_announce)} torrent(s)."
                 )
