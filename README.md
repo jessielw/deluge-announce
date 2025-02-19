@@ -19,10 +19,19 @@ A script that will announce torrents on a timed interval (CRON).
 To run the Docker container with the appropriate environment variables, use the following command:
 
 ```bash
-docker run -e "WEB_URL=<your_web_url>" -e "PASSWORD=<your_web_url_password>" -e "CRON_SCHEDULE=0 * * * *" -e "SKIP_RE_ANNOUNCE=too many requests" -e "FORCE_RE_ANNOUNCE=warning|error" -e "LOG_LEVEL=Info" -v "app_data:/app_data"
+docker run -e "WEB_URL=<your_web_url>" -e "PASSWORD=<your_web_url_password>" -e "CRON_SCHEDULE=0 * * * *" -e "SKIP_RE_ANNOUNCE=too many requests" -e "FORCE_RE_ANNOUNCE=warning|error" -e "FORCE_RE_ANNOUNCE_NEW_TORRENTS_INTERVAL=60" -e "FORCE_RE_ANNOUNCE_NEW_TORRENTS_MAX_AGE=300" -e "LOG_LEVEL=Info" -v "app_data:/app_data"
 ```
 
 `SKIP_RE_ANNOUNCE` and `SKIP_RE_ANNOUNCE` expects **pipe operator |** separated strings. i.e. `SKIP_RE_ANNOUNCE=reason1|reason2`
+
+**Optionally you can provide the below variables that will check for newly added torrents and announce them as needed**
+
+`FORCE_RE_ANNOUNCE_NEW_TORRENTS_INTERVAL`: If set to anything greater than 0, the program will look for new
+torrents and re-announce them if less than the max age.
+
+`FORCE_RE_ANNOUNCE_NEW_TORRENTS_MAX_AGE`: Max age of **new** torrents qualify to be force re-announced.
+
+**Optional**
 
 `LOG_LEVEL` defaults to **Info**. It can be any of **Debug**, **Info**, **Warning**, **Error**, or **Critical**. _(Case insensitive)_
 
@@ -49,6 +58,8 @@ announcer = Announcer(
     skip_re_announce=["too many requests"], # defaults
     force_re_announce=["warning", "error"]  # defaults
     log_level="Info", # defaults to INFO from enum LogLevel. Strings are also accepted "Debug", "Info", "Warning", "Error", or "Critical". (Case insensitive)
+    force_re_announce_new_torrents_interval=60, # optional, ignored if not using `run_forever`
+    force_re_announce_new_torrents_max_age=300, # optional, ignored if not using `run_forever`s
 )
 
 # Run the notifier once
