@@ -1,7 +1,8 @@
 import asyncio
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
-from deluge_web_client import DelugeWebClient
+from deluge_web_client import DelugeWebClient, DelugeWebClientError
+from time import sleep
 
 from .logger import init_logger
 from .config import Config
@@ -78,7 +79,15 @@ class Announcer:
     def parse_torrents(self) -> None:
         self.logger.info("Parsing torrents to re-announce.")
 
-        torrents_status = self.client.get_torrents_status()
+        try:
+            torrents_status = self.client.get_torrents_status()
+        except DelugeWebClientError as e:
+            # web ui session has timed out, we'll log back in and continue
+            if "not authenticated" in str(e).lower():
+                self.client.login()
+                sleep(1)
+            torrents_status = self.client.get_torrents_status()
+
         if torrents_status.error:
             self.logger.warning(f"There was an error ({torrents_status.error}).")
             return
@@ -146,7 +155,14 @@ class Announcer:
             "params": [torrents],
             "id": self.client.ID + 1,
         }
-        self.client.execute_call(payload=payload)
+        try:
+            self.client.execute_call(payload=payload, handle_error=False)
+        except DelugeWebClientError as e:
+            # web ui session has timed out, we'll log back in and continue
+            if "not authenticated" in str(e).lower():
+                self.client.login()
+                sleep(1)
+                self._re_announce(torrents)
 
     def run(self) -> None:
         """Run the script once (for user-based execution)."""
