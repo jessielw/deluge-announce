@@ -28,4 +28,10 @@ class Config:
     force_re_announce: list[str] = (
         str(os.environ.get("FORCE_RE_ANNOUNCE", ["warning|error"])).lower().split("|")
     )
+    force_re_announce_new_torrents_interval: int = int(
+        os.environ.get("FORCE_RE_ANNOUNCE_NEW_TORRENTS_INTERVAL", 0)
+    )
+    force_re_announce_new_torrents_max_age: int = int(
+        os.environ.get("FORCE_RE_ANNOUNCE_NEW_TORRENTS_MAX_AGE", 300)
+    )
     log_level: str | None = os.environ.get("LOG_LEVEL")
