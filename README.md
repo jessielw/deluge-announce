@@ -59,7 +59,7 @@ announcer = Announcer(
     force_re_announce=["warning", "error"]  # defaults
     log_level="Info", # defaults to INFO from enum LogLevel. Strings are also accepted "Debug", "Info", "Warning", "Error", or "Critical". (Case insensitive)
     force_re_announce_new_torrents_interval=60, # optional, ignored if not using `run_forever`
-    force_re_announce_new_torrents_max_age=300, # optional, ignored if not using `run_forever`s
+    force_re_announce_new_torrents_max_age=300, # optional, ignored if not using `run_forever`
 )
 
 # Run the notifier once
