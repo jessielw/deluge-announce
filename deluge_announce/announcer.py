@@ -3,6 +3,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from deluge_web_client import DelugeWebClient, DelugeWebClientError
 from queue import Queue, Empty as EmptyQueue
+from math import ceil
 from time import sleep
 from threading import Thread
 
@@ -298,11 +299,12 @@ class Announcer:
                         if leechers > 0 or seeders > 0:
                             continue
 
-                        # if torrent progress is above 0 and less than 100 we can assume it's properly downloading
-                        if state == "Downloading":
-                            progress = int(torrent_data.get("progress"))
-                            if progress > 0 and progress < 100:
-                                continue
+                        # if torrent progress is above 0 we can assume it's properly downloading
+                        if (
+                            state == "Downloading"
+                            and ceil(torrent_data.get("progress")) > 0
+                        ):
+                            continue
 
                         # check active time, if it meets the requirements add it to be force re-announced
                         active_time = int(torrent_data.get("active_time"))
